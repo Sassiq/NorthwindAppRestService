@@ -23,6 +23,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Northwind.ReportingServices.OData\Northwind.ReportingServices.OData.csproj" />
+    <ProjectReference Include="..\DependencyResolver\DependencyResolver.csproj" />
   </ItemGroup>
 </Project>
