@@ -20,6 +20,7 @@ namespace DependencyResolver
 
         public IServiceProvider CreateServiceProvider()
         {
+            var a = this.ConfigurationRoot.GetConnectionString("SqlConnection");
             return this.ConfigurationRoot["type"] switch
             {
                 "REST" => new ServiceCollection()
@@ -31,7 +32,7 @@ namespace DependencyResolver
                 "SQL" => new ServiceCollection()
                     .AddScoped<ICurrencyExchangeService>(s => new CurrencyExchangeService(this.ConfigurationRoot["accessKey"]))
                     .AddScoped<ICountryCurrencyService, CountryCurrencyService>()
-                    .AddScoped<IProductReportService>(s => new ProductReportService(new Uri(this.ConfigurationRoot["northwindUrl"])))
+                    .AddScoped<IProductReportService>(s => new Northwind.ReportingServices.SqlService.ProductReports.ProductReportService(this.ConfigurationRoot.GetConnectionString("SqlConnection")))
                     .BuildServiceProvider(),
 
                 _ => throw new ArgumentException("Incorrect appsettings.json"),
