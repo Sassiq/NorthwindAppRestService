@@ -224,21 +224,8 @@ namespace Northwind.ReportingServices.OData.ProductReports
         /// <inheritdoc/>
         public async Task<ProductReport<ProductLocalPrice>> GetCurrentProductsWithLocalCurrencyReport(ICountryCurrencyService countryCurrencyService, ICurrencyExchangeService currencyExchangeService)
         {
-            if (countryCurrencyService == null)
-            {
-                throw new ArgumentNullException(nameof(countryCurrencyService));
-            }
+            ValidateServices(countryCurrencyService, currencyExchangeService);
 
-            if (currencyExchangeService == null)
-            {
-                throw new ArgumentNullException(nameof(currencyExchangeService));
-            }
-
-            return await this.GetProductReportWithLocalPrices(countryCurrencyService, currencyExchangeService);
-        }
-
-        private async Task<ProductReport<ProductLocalPrice>> GetProductReportWithLocalPrices(ICountryCurrencyService countryCurrencyService, ICurrencyExchangeService currencyExchangeService)
-        {
             var productsQuery = (DataServiceQuery<NorthwindProduct>)(
                 from p in this.entities.Products
                 where !p.Discontinued
@@ -253,6 +240,19 @@ namespace Northwind.ReportingServices.OData.ProductReports
             var result = await GetProductLocalPrices(countryCurrencyService, currencyExchangeService, products, suppliers);
 
             return new ProductReport<ProductLocalPrice>(result);
+        }
+
+        private static void ValidateServices(ICountryCurrencyService countryCurrencyService, ICurrencyExchangeService currencyExchangeService)
+        {
+            if (countryCurrencyService == null)
+            {
+                throw new ArgumentNullException(nameof(countryCurrencyService));
+            }
+
+            if (currencyExchangeService == null)
+            {
+                throw new ArgumentNullException(nameof(currencyExchangeService));
+            }
         }
 
         private static async Task<IEnumerable<ProductLocalPrice>> GetProductLocalPrices(
