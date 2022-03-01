@@ -234,12 +234,17 @@ namespace Northwind.ReportingServices.OData.ProductReports
                 throw new ArgumentNullException(nameof(currencyExchangeService));
             }
 
+            return await this.GetProductReportWithLocalPrices(countryCurrencyService, currencyExchangeService);
+        }
+
+        private async Task<ProductReport<ProductLocalPrice>> GetProductReportWithLocalPrices(ICountryCurrencyService countryCurrencyService, ICurrencyExchangeService currencyExchangeService)
+        {
             var productsQuery = (DataServiceQuery<NorthwindProduct>)(
                 from p in this.entities.Products
                 where !p.Discontinued
                 select p);
 
-            var suppliersQuery = (DataServiceQuery<Supplier>)this.entities.Suppliers;
+            var suppliersQuery = this.entities.Suppliers;
 
             var products = await Task<IEnumerable<NorthwindProduct>>.Factory.FromAsync(productsQuery.BeginExecute(null, null), (ar) => productsQuery.EndExecute(ar));
 

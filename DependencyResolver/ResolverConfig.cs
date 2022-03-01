@@ -20,7 +20,6 @@ namespace DependencyResolver
 
         public IServiceProvider CreateServiceProvider()
         {
-            var a = this.ConfigurationRoot.GetConnectionString("SqlConnection");
             return this.ConfigurationRoot["type"] switch
             {
                 "REST" => new ServiceCollection()

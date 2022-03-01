@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
+#pragma warning disable CA1812
+
 namespace CurrencyServices.CurrencyExchange
 {
     /// <summary>

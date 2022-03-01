@@ -6,12 +6,14 @@ using DependencyResolver;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.ReportingServices.ProductReports;
 
+#pragma warning disable S3776
+
 namespace ReportingApp
 {
     /// <summary>
     /// Program class.
     /// </summary>
-    public sealed class Program
+    public static class Program
     {
         private const string CurrentProductsReport = "current-products";
         private const string MostExpensiveProductsReport = "most-expensive-products";
@@ -118,7 +120,6 @@ namespace ReportingApp
             var exchangeService = provider.GetService<ICurrencyExchangeService>();
             var currencyService = provider.GetService<ICountryCurrencyService>();
 
-            var report = await service.GetCurrentProductsWithLocalCurrencyReport(currencyService, exchangeService);
             await new CurrentProductLocalPriceReport(service, exchangeService, currencyService).PrintReport();
         }
 
